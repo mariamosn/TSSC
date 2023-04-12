@@ -1,3 +1,9 @@
+Maria Moșneag
+343C1
+Tema 1 TSSC
+
+
+1. cryptography
     Am analizat pașii urmați pentru generarea mesajului criptat și apoi am scris
     un script (scipt.py) pe care să îl folosesc pentru decriptare.
     Scriptul:
@@ -9,10 +15,7 @@
         - decodează mesajul din base64
         - decriptează codul obținut folosind cheia determinată anterior
 
-your_pub = g ^ your_priv mod p
-shared = my_pub ^ your_priv mod p
+2. linux access control (remote container)
 
-Exemplu de valoare pentru cheia privată:
-my_priv = 11770246699657521249810253430779065705211875384103497164136403622683842607469702197253391392586542798366525960175932842159603277607056418879071902525451537
 
-FLAG: SpeishFlag{kWP7lGwKx8bOOvX1enWLYGMwZEX2qGPx}
+3. binary exploit
