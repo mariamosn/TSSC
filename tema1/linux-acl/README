@@ -1,0 +1,2 @@
+ssh janitor@isc2023.1337.cx -i ./id_rsa
+/usr/local/bin
