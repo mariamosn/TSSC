@@ -54,7 +54,7 @@ Tema 1 TSSC
         - "n\n": când suntem întrebați dacă continuăm
         - "[orice număr] " * 37
             + "[134514406 = valoarea în decimal egală cu 0x080486e6, adresa
-                            funcției ]"
+                            funcției win]"
             + "[orice număr] "
             + "[valoarea lucky_number afișată anterior] "
             + "x\n"
@@ -62,22 +62,13 @@ Tema 1 TSSC
 
 [
     Extra:
-
-    O altă abordare pe care am încercat-o presupunea:
+    A doua abordare presupune:
         - folosirea unui format string attack în main pentru a afla valoarea
             lucky_number (string-ul citit ca nume era apoi folosit ca format
             string într-un apel de printf, fiind astfel posibil să incluzi adre-
             sa de la care vrei să faci leak-ul în string, iar apoi un %s astfel
             încât să fie afișat string-ul de la acea adresă)
-        - exploatarea aceleiași vulnerabilități din loop pentru a suprascrie:
+        - exploatarea aceleași vulnerabilități din loop pentru a suprascrie:
             adresa de return cu cea a funcției win și
             primul parametru cu valoarea lucky_number leak-uită anterior
-        Aceasta nu mergea însă pentru că la adresa lui lucky_number fiind salvat
-        un număr, acei bytes nu reprezentau valori corespunzătoare unor caracte-
-        re printabile, deci nu se putea extrage valoarea dorită.
-
-    Generarea payload-ului:
-    I. cat <((python3 -c 'import sys; sys.stdout.buffer.write(b"Nume\n" +\b"1 " * 37 + b"134514611 x\nN\n" + b"1 " * 37 + b"134514406 1\n")')) - | nc isc2023.1337.cx 10091
-    II. Se scrie numărul lucky afișat mai sus urmat de " x\n".
-    III. Se alege opțiunea "n".
 ]
